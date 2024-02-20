@@ -1,0 +1,253 @@
+#1. Write a MongoDB query to display the fields restaurant_id, name, borough and zip code, but exclude the field _id for all the documents in the collection restaurant.
+#NOTE: zipcode belongs to address field, so we need to extract this information from address.
+training> db.restaurants.find({},{"restaurant_id":1, "name":1, "borough":1, "address.zipcode":1, "_id":0})
+[
+  {
+    address: { zipcode: '10462' },
+    borough: 'Bronx',
+    name: 'Morris Park Bake Shop',
+    restaurant_id: '30075445'
+  },
+  {
+    address: { zipcode: '11224' },
+    borough: 'Brooklyn',
+    name: 'Riviera Caterer',
+    restaurant_id: '40356018'
+  },
+  {
+    address: { zipcode: '10460' },
+    borough: 'Bronx',
+    name: 'Wild Asia',
+    restaurant_id: '40357217'
+  },
+
+#2. Write a MongoDB query to display the next 5 restaurants after skipping first 5 which are in the borough Bronx.
+training> db.restaurants.find({"borough":"Bronx"}).skip(5).limit(5)
+[
+  {
+    _id: ObjectId('659b79b352d6ce837fbb8e3d'),
+    address: {
+      building: '658',
+      coord: [ -73.81363999999999, 40.82941100000001 ],
+      street: 'Clarence Ave',
+      zipcode: '10465'
+    },
+    borough: 'Bronx',
+    cuisine: 'American ',
+    grades: [
+      {
+        date: ISODate('2014-06-21T00:00:00.000Z'),
+        grade: 'A',
+        score: 5
+      },
+      {
+        date: ISODate('2012-07-11T00:00:00.000Z'),
+        grade: 'A',
+        score: 10
+      }
+    ],
+    name: 'Manhem Club',
+    restaurant_id: '40364363'
+  },
+
+#3. Write a MongoDB query to find the restaurants who achieved a score more than 90.
+#We have to dig deeper into grades field to take the score which is more than 90
+training> db.restaurants.find({"grades": {$elemMatch:{"score":{"$gt":90}}} } )
+[
+  {
+    _id: ObjectId('659b79b352d6ce837fbb8f57'),
+    address: {
+      building: '65',
+      coord: [ -73.9782725, 40.7624022 ],
+      street: 'West   54 Street',
+      zipcode: '10019'
+    },
+    borough: 'Manhattan',
+    cuisine: 'American ',
+    grades: [
+      {
+        date: ISODate('2014-08-22T00:00:00.000Z'),
+        grade: 'A',
+        score: 11
+      },
+      {
+        date: ISODate('2014-03-28T00:00:00.000Z'),
+        grade: 'C',
+        score: 131
+      },
+      {
+        date: ISODate('2013-09-25T00:00:00.000Z'),
+        grade: 'A',
+        score: 11
+      },
+      {
+        date: ISODate('2013-04-08T00:00:00.000Z'),
+        grade: 'B',
+        score: 25
+      },
+      {
+        date: ISODate('2012-10-15T00:00:00.000Z'),
+        grade: 'A',
+        score: 11
+      },
+      {
+        date: ISODate('2011-10-19T00:00:00.000Z'),
+        grade: 'A',
+        score: 13
+      }
+    ],
+    name: "Murals On 54/Randolphs'S",
+    restaurant_id: '40372466'
+  }
+
+#4. Write a MongoDB query to find the restaurants that achieved a score, more than 80 but less than 100
+training> db.restaurants.find({"grades":{$elemMatch :{"score": {"$gt":80, "$lt": 100}}}})
+[
+  {
+    _id: ObjectId('659b79b352d6ce837fbb9000'),
+    address: {
+      building: '345',
+      coord: [ -73.9864626, 40.7266739 ],
+      street: 'East 6 Street',
+      zipcode: '10003'
+    },
+    borough: 'Manhattan',
+    cuisine: 'Indian',
+    grades: [
+      {
+        date: ISODate('2014-09-15T00:00:00.000Z'),
+        grade: 'A',
+        score: 5
+      },
+      {
+        date: ISODate('2014-01-14T00:00:00.000Z'),
+        grade: 'A',
+        score: 8
+      },
+      {
+        date: ISODate('2013-05-30T00:00:00.000Z'),
+        grade: 'A',
+        score: 12
+      },
+      {
+        date: ISODate('2013-04-24T00:00:00.000Z'),
+        grade: 'P',
+        score: 2
+      },
+      {
+        date: ISODate('2012-10-01T00:00:00.000Z'),
+        grade: 'A',
+        score: 9
+      },
+      {
+        date: ISODate('2012-04-06T00:00:00.000Z'),
+        grade: 'C',
+        score: 92
+      },
+      {
+        date: ISODate('2011-11-03T00:00:00.000Z'),
+        grade: 'C',
+        score: 41
+      }
+    ]
+
+#4. Write a MongoDB query to find the restaurants which locate in a latitude value less than -95.754168.
+training> db.restaurants.find({"address.coord":{"$lt":-95.754168}})
+[
+  {
+    _id: ObjectId('659b79b352d6ce837fbb9446'),
+    address: {
+      building: '3707',
+      coord: [ -101.8945214, 33.5197474 ],
+      street: '82 Street',
+      zipcode: '11372'
+    },
+    borough: 'Queens',
+    cuisine: 'American ',
+    grades: [
+      {
+        date: ISODate('2014-06-04T00:00:00.000Z'),
+        grade: 'A',
+        score: 12
+      },
+      {
+        date: ISODate('2013-11-07T00:00:00.000Z'),
+        grade: 'B',
+        score: 19
+      },
+      {
+        date: ISODate('2013-05-17T00:00:00.000Z'),
+        grade: 'A',
+        score: 11
+      },
+      {
+        date: ISODate('2012-08-29T00:00:00.000Z'),
+        grade: 'A',
+        score: 11
+      },
+      {
+        date: ISODate('2012-04-03T00:00:00.000Z'),
+        grade: 'A',
+        score: 12
+      },
+      {
+        date: ISODate('2011-11-16T00:00:00.000Z'),
+        grade: 'A',
+        score: 7
+      }
+    ],
+    name: 'Burger King',
+    restaurant_id: '40534067'
+  }
+
+#5. Write a MongoDB query to find the restaurants that do not prepare any cuisine of 'American' and their grade score more than 70 and latitude less than -65.754168
+#USE $and to combine required conditions
+
+training> db.restaurants.find({"$and":[{"cuisine": {"$ne":"American"}}, {"grades.score":{$gt:70}},{"address.coord":{$lt:-65.754168}} ]})
+[
+  {
+    _id: ObjectId('659b79b352d6ce837fbb8f57'),
+    address: {
+      building: '65',
+      coord: [ -73.9782725, 40.7624022 ],
+      street: 'West   54 Street',
+      zipcode: '10019'
+    },
+    borough: 'Manhattan',
+    cuisine: 'American ',
+    grades: [
+      {
+        date: ISODate('2014-08-22T00:00:00.000Z'),
+        grade: 'A',
+        score: 11
+      },
+      {
+        date: ISODate('2014-03-28T00:00:00.000Z'),
+        grade: 'C',
+        score: 131
+      },
+      {
+        date: ISODate('2013-09-25T00:00:00.000Z'),
+        grade: 'A',
+        score: 11
+      },
+      {
+        date: ISODate('2013-04-08T00:00:00.000Z'),
+        grade: 'B',
+        score: 25
+      },
+      {
+        date: ISODate('2012-10-15T00:00:00.000Z'),
+        grade: 'A',
+        score: 11
+      },
+      {
+        date: ISODate('2011-10-19T00:00:00.000Z'),
+        grade: 'A',
+        score: 13
+      }
+    ],
+    name: "Murals On 54/Randolphs'S",
+    restaurant_id: '40372466'
+  }
+
