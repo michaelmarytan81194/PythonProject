@@ -1,0 +1,4 @@
+Scenario:
+We need to extract files from diversity of files ranging from csv, json, xml on local environments.
+This is to demonstrate my abilities to apply Python functions, Pandas and other modules that work with specific formats, such as xml.etree.ElementTree (XML)
+Next, to transform into the designated column type and load to CSV then put into SQL Server.
